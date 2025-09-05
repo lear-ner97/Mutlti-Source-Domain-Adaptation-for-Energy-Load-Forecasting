@@ -197,7 +197,7 @@ class full_model(nn.Module):
     
 
     
-device = "cuda:1" if torch.cuda.is_available() else 'cpu'
+device = "cuda" if torch.cuda.is_available() else 'cpu'
 
 def train_one_epoch(full_model,
                     source_loaders,tgt_train_loader,regression_loss_function,regression_optimizer,
@@ -387,4 +387,5 @@ def train_one_epoch_target_only(full_model,list_source_loaders,tgt_train_loader,
     scheduler.step()
     print()
     return avg_loss_across_batches,target_features#,final_features3,final_features4
+
 
