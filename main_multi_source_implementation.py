@@ -15,7 +15,7 @@ import torch.optim.lr_scheduler as lr_scheduler
 import numpy as np
 from matplotlib.colors import ListedColormap
 import random
-import shap
+#import shap
 
 
 
@@ -281,7 +281,7 @@ tgt_valid_loader = DataLoader(tgt_valid_dataset, batch_size=tgt_batch_size, shuf
 tgt_test_loader = DataLoader(tgt_test_dataset, batch_size=tgt_batch_size, shuffle=False,pin_memory=True)
 
 # print the shape of a batch of data
-device = "cuda:1" if torch.cuda.is_available() else 'cpu'
+device = "cuda" if torch.cuda.is_available() else 'cpu' ###change, also in functions.py
 
 
 print("source data\n")
@@ -369,6 +369,7 @@ for random_seed in seeds:
     # initialize the training loss, validation loss and lowest validation loss
     training_loss, validation_loss = [], []
     best_val_loss = float('inf')
+    #full_model_path='best_full_model.pth' ####change
 
     for epoch in range(num_epochs):#src1_features,src2_features,src3_features,src4_features  
 
@@ -392,8 +393,8 @@ for random_seed in seeds:
         # Update the best validation loss
         if val_loss < best_val_loss:
             best_val_loss = val_loss
-            full_model_path='best_full_model.pth'
-            torch.save(full_model.state_dict(), best_full_model_path)
+            #change
+            torch.save(full_model.state_dict(), best_full_model) 
 
     end_time = time.time()
     training_time = end_time - start_time
@@ -402,7 +403,7 @@ for random_seed in seeds:
     # load the best model for the evaluation step
     with torch.no_grad():
 
-        full_model_state_dict = torch.load(best_full_model_path)
+        full_model_state_dict = torch.load(best_full_model)
 
         full_model.load_state_dict(full_model_state_dict)
 
