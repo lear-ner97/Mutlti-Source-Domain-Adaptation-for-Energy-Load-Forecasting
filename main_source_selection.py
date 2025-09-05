@@ -17,7 +17,7 @@ import numpy as np
 from sklearn.decomposition import PCA
 from matplotlib.colors import ListedColormap
 import random
-import shap
+#import shap
 
 
 
@@ -323,7 +323,7 @@ tgt_valid_loader = DataLoader(tgt_valid_dataset, batch_size=tgt_batch_size, shuf
 tgt_test_loader = DataLoader(tgt_test_dataset, batch_size=tgt_batch_size, shuffle=False,pin_memory=True)
 
 # print the shape of a batch of data
-device = "cuda:1" if torch.cuda.is_available() else 'cpu'
+device = "cuda" if torch.cuda.is_available() else 'cpu'
 
 print("source data\n")
 i = 0
@@ -468,13 +468,12 @@ for random_seed in seeds:
 #            best_BiGRU_feature_extractor_path = 'best_BiGRU_feature_extractor.pth'
 #            best_Attention_path = 'best_Attention.pth'
 #            best_ForecastingLayer_path = 'best_ForecastingLayer.pth'
-            best_full_model_path='best_full_model.pth'
 #            torch.save(TCN_feature_extractor.state_dict(),
 #                       best_TCN_feature_extractor_path)
 #            torch.save(BiGRU_feature_extractor.state_dict(), best_BiGRU_feature_extractor_path)
 #            torch.save(Attention_mechanism.state_dict(), best_Attention_path)
 #            torch.save(Forecasting_Layer.state_dict(), best_ForecastingLayer_path)
-            torch.save(full_model.state_dict(), best_full_model_path)
+            torch.save(full_model.state_dict(), best_full_model)
 
     end_time = time.time()
     training_time = end_time - start_time
@@ -486,7 +485,7 @@ for random_seed in seeds:
 #        BiGRU_feature_extractor_state_dict = torch.load(best_BiGRU_feature_extractor_path)
 #        Attention_state_dict = torch.load(best_Attention_path)
 #        ForecastingLayer_state_dict = torch.load(best_ForecastingLayer_path)
-        full_model_state_dict = torch.load(best_full_model_path)
+        full_model_state_dict = torch.load(best_full_model)
         
 #        TCN_feature_extractor.load_state_dict(TCN_feature_extractor_state_dict)
 #        BiGRU_feature_extractor.load_state_dict(BiGRU_feature_extractor_state_dict)
