@@ -29,7 +29,7 @@ tgt_building = 'Robin_education_Billi'
 #                                'Robin_education_Lizbeth','Robin_education_Jasper',
 #                                'Robin_education_Terrance','Robin_education_Takako',
 #                                'Robin_education_Kristopher','Robin_education_Billi'
-nbr_sources=1
+
 src_building1 = 'Robin_education_Julius'#Julius
 src_building2 = 'Robin_education_Terrance'#Terrance
 src_building3 = 'Robin_education_Takako'#Takako
@@ -320,7 +320,7 @@ random_seed=32 # the result is basically the same with different random seeds
 
 #training hyperparameters
 learning_rate = 0.001
-num_epochs = 20
+num_epochs = 1
 ############### tcn hyperparameters
 # kernel_size was tested using these vlaues{3,5,7,9,10,11,13}
 # for 3,5 gave low accuracy values, started to improve significantly from 7, the best is 9
@@ -374,7 +374,8 @@ for random_seed in seeds:
     for epoch in range(num_epochs):#src1_features,src2_features,src3_features,src4_features  
 
         #uncomment this for multi source
-        train_loss,src1_features,src2_features,src3_features,target_features=train_one_epoch(full_model,list_source_loaders,tgt_train_loader,
+        #@for the source features, it depends on how many sources you have. The following line corresponds to four sources
+        train_loss,src1_features,src2_features,src3_features,src4_features,target_features=train_one_epoch(full_model,list_source_loaders,tgt_train_loader,
                     regression_loss_function,regression_optimizer,scheduler,epoch,
                     num_epochs)
         #uncomment this for target only
