@@ -211,17 +211,21 @@ def train_one_epoch(full_model,
     ####### change ,src2_train_loader,src3_train_loader,src4_train_loader
     src1_train_loader,src2_train_loader,src3_train_loader,src4_train_loader=source_loaders[0],source_loaders[1],source_loaders[2],source_loaders[3]#,source_loaders[3]
 
-    for (src1_batch_index, src1_batch),(src2_batch_index, src2_batch),(src3_batch_index, src3_batch),(tgt_batch_index, tgt_batch)in zip(#,(src2_batch_index, src2_batch),(src3_batch_index, src3_batch),(src4_batch_index, src4_batch)
-            enumerate(src1_train_loader),enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(tgt_train_loader)):#,enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(src4_train_loader)
+##@for the source dataloaders, it depends on how many sources you have. The following line corresponds to four sources
+    for (src1_batch_index, src1_batch),(src2_batch_index, src2_batch),(src3_batch_index, src3_batch),(src4_batch_index, src4_batch),(tgt_batch_index, tgt_batch)in zip(#,(src2_batch_index, src2_batch),(src3_batch_index, src3_batch),(src4_batch_index, src4_batch)
+            enumerate(src1_train_loader),enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(src4_train_loader),enumerate(tgt_train_loader)):#,enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(src2_train_loader),enumerate(src3_train_loader),enumerate(src4_train_loader)
         ######################### continue //////////// ,enumerate(src4_train_loader)
+        #you comment/uncomment these lines based on how many sources you have
         src1_x_batch, src1_y_batch = src1_batch[0].to(device), src1_batch[1].to(device)
         src2_x_batch, src2_y_batch = src2_batch[0].to(device), src2_batch[1].to(device)
         src3_x_batch, src3_y_batch = src3_batch[0].to(device), src3_batch[1].to(device)
-        #src4_x_batch, src4_y_batch = src4_batch[0].to(device), src4_batch[1].to(device)
+        src4_x_batch, src4_y_batch = src4_batch[0].to(device), src4_batch[1].to(device)
         tgt_x_batch, tgt_y_batch = tgt_batch[0].to(device), tgt_batch[1].to(device)
 
         source_losses = []
-
+        
+        #@you comment/uncomment these lines based on how many sources you have
+        #src1
         final_features1=full_model.feature_extractor(src1_x_batch)[0]
         prediction=full_model(src1_x_batch)
         regression_loss = regression_loss_function(prediction, src1_y_batch)
@@ -244,16 +248,17 @@ def train_one_epoch(full_model,
         #source_features.append(final_features)
         source_losses.append(regression_loss)
         ##################### uncomment this if you want a 4-source model
-        #src4
-#        final_features4=full_model(src4_x_batch)[1]
-#        prediction=full_model(src4_x_batch)[0]
-#        regression_loss = regression_loss_function(prediction, src4_y_batch)
-#        #append source features and losses 
-#        #source_features.append(final_features)
-#        source_losses.append(regression_loss)
+        #src4 #@ 
+        final_features4=full_model.feature_extractor(src1_x_batch)[0]#full_model(src4_x_batch)[1] #@
+        prediction=full_model(src4_x_batch)#[0] #@
+        regression_loss = regression_loss_function(prediction, src4_y_batch)
+        #append source features and losses 
+        #source_features.append(final_features)
+        source_losses.append(regression_loss)
 
 
-        total_concatenated_features = final_features1+final_features2+final_features3#+final_features4
+        #@ you sum the features based on how many sources you have
+        total_concatenated_features = final_features1+final_features2+final_features3+final_features4
         
         # target       
         target_features=full_model.feature_extractor(tgt_x_batch)[0]
@@ -280,7 +285,8 @@ def train_one_epoch(full_model,
     
     scheduler.step()
     print()
-    return avg_loss_across_batches,final_features1,final_features2,final_features3,target_features#,final_features4,target_features#,final_features4#,final_features4,#,final_features3,final_features4
+    #@ you return the final features based on how many sources you have
+    return avg_loss_across_batches,final_features1,final_features2,final_features3,final_features4,target_features#,final_features4,target_features#,final_features4#,final_features4,#,final_features3,final_features4
 
 def validate_one_epoch(full_model,
                        epoch,valid_loader,regression_loss_function):
@@ -387,5 +393,4 @@ def train_one_epoch_target_only(full_model,list_source_loaders,tgt_train_loader,
     scheduler.step()
     print()
     return avg_loss_across_batches,target_features#,final_features3,final_features4
-
 
