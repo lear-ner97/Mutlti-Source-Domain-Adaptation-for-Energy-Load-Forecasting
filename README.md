@@ -1,4 +1,4 @@
-# mutlti-source-domain-adaptation-for-energy-load-forecasting
+# Mutlti-source-domain-adaptation-for-energy-load-forecasting
 This is the official implementation of our submitted research paper "An explainable unified multi-source domain adaptation  framework for short-term energy load forecasting"
 
 # Main Contribution
