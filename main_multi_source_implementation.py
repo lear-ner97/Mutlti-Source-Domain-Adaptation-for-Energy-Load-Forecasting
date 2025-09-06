@@ -320,7 +320,7 @@ random_seed=32 # the result is basically the same with different random seeds
 
 #training hyperparameters
 learning_rate = 0.001
-num_epochs = 1
+num_epochs = 20
 ############### tcn hyperparameters
 # kernel_size was tested using these vlaues{3,5,7,9,10,11,13}
 # for 3,5 gave low accuracy values, started to improve significantly from 7, the best is 9
@@ -475,4 +475,5 @@ print('mapes:\n')
 print(mapes)
 print('r2scores:\n')
 print(r2scores)
+
 
