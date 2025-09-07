@@ -25,9 +25,6 @@ For reproducibility of the results, you have to modify these lines:<br>
 run the file main_multi_source_implementation.py.  <br>    The expected output: <br>  1/ test metrics  <br> 2/plot of test prediction vs true data<br>
 PS: If you want to train the target-only model (without domain adaptation), you just comment lines 376-380 and uncomment lines 382-384.
 
-## 📬 Contact
-If you have questions or encounter issues, please [open an issue](https://github.com/lear-ner97/Mutlti-Source-Domain-Adaptation-for-Energy-Load-Forecasting/issues) or contact us at **sami.benbrahim@mail.concordia.ca**.
-
 ## Description of each file
 *shap.py: once you finish the model training, you use the code in shap.py to visualize shap explanation graphs.<br>
 *attention.py: once you finish the model training, you use the code in attention.py to visualize the attention weights of the model.<br>
@@ -41,3 +38,8 @@ If you have questions or encounter issues, please [open an issue](https://github
 *main_source_selection.py: used for source domain selection.<br>
 *main_multi_source_implementation.py: multi-source domain model training.<br>
 *plot_models_prediction.py: used to plot the test prediction vs true data, with different number of source domains.
+
+## 📬 Contact
+If you have questions or encounter issues, please [open an issue](https://github.com/lear-ner97/Mutlti-Source-Domain-Adaptation-for-Energy-Load-Forecasting/issues) or contact us at **sami.benbrahim@mail.concordia.ca**.
+
+
