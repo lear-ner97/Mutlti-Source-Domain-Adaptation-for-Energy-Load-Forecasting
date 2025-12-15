@@ -40,6 +40,6 @@ PS: If you want to train the target-only model (without domain adaptation), you 
 *plot_models_prediction.py: used to plot the test prediction vs true data, with different number of source domains.
 
 ## 📬 Contact
-If you have questions or encounter issues, please [open an issue](https://github.com/lear-ner97/Mutlti-Source-Domain-Adaptation-for-Energy-Load-Forecasting/issues) or contact us at **sami DOT benbrahim AT mail DOT concordia DOT ca **.
+If you have questions or encounter issues, please [open an issue](https://github.com/lear-ner97/Mutlti-Source-Domain-Adaptation-for-Energy-Load-Forecasting/issues) or contact us at ** sami DOT benbrahim AT mail DOT concordia DOT ca **.
 
 
