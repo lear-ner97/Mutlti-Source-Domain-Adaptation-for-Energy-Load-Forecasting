@@ -15,8 +15,8 @@ No need to change the values of hyperparameters. <br>
 For reproducibility of the results, you have to modify these lines:<br>
 *main_multi_source_implementation.py/line 378, you should adjust the number of source features depending on how many source datasets you are using. For example, if you use three source datasets, you have to remove src4_features.<br>
 *functions.py: you have to adjust the following lines, depending on the number of source datasets you want to use:<br>
-
-  -line 214: the number of data loaders and their indices.<br>
+  - line 214: the number of data loaders and their indices.<br>
+  - lines 219 to 222: uncomment/comment the batches based on the number of source datasets. For instance, if you are using two source datasets you comment src3 and src4 batches. 
   - lines 227 to 257: you uncomment/comment the blocks, based on the number of sources. For instance, if you use three source datasets, you uncomment the final block.<br>
   - line 261: you remove the unused final features.<br>
   - line 289: you return the final features, based on how many sources you are using.
