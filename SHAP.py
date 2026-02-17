@@ -5,8 +5,7 @@ Created on Fri Jan 24 09:49:49 2025
 
 @author: sami_b
 """
-#Note: 
-#you have to complete the running of the main file, then you run this file
+
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -16,6 +15,16 @@ from functions import *
 from sklearn.preprocessing import StandardScaler
 import shap
 from shap import DeepExplainer,KernelExplainer,GradientExplainer
+
+
+
+
+
+################## IMPORTANT
+#Note: 
+#you have to complete the running of the main file  main_multi_source_implementation.py, then you run this file 
+#full_model is an instance of the validated model in main_multi_source_implementation.py
+
 
 
 
@@ -41,6 +50,47 @@ shap_values = explainer.shap_values(X_test_tgt[:nbr_samples_to_explain].to(devic
 #the smaller the data size the more local is the explanation
 #shap.plots.bar(shap_values)
 
+
+############################# TASK1: compute global relative feature importance 
+#1-Global Feature Importance (Mean Absolute SHAP)
+mean_abs_shap = np.mean(np.abs(shap_values), axis=(0,3))#axis=0 for hourly, (0,3) for daily
+#the order of features in target is as follows:
+features = ['cosine_transform_hour_of_day', 'is_holiday', 'is_weekend', 'airTemperature','windSpeed'] + [f"load_lag{i}" for i in range(tgt_lookback+tgt_horizon-1, 0, -1)]#+[tgt_building]
+mean_abs_shap_flat = mean_abs_shap.squeeze()  # shape (len(features),)
+
+# Optional: sort by importance
+limit_features=29 #for daily forecasting only because there are 173 features
+sorted_idx = np.argsort(mean_abs_shap_flat)[::-1]  # descending order
+sorted_features = [features[i] for i in sorted_idx]
+sorted_values = mean_abs_shap_flat[sorted_idx]
+# Plot horizontal bar chart
+plt.figure(figsize=(10, 6))
+plt.barh(sorted_features[:limit_features][::-1], sorted_values[:limit_features][::-1], color="skyblue")
+plt.xlabel("Mean |SHAP Value|")
+#plt.title("Feature Importance (Top Features)")
+max_val = sorted_values.max()
+plt.xlim(0, max_val * 1.1)  # 5% extra space
+plt.tight_layout()
+plt.savefig('mean_abs_shap.pdf', format='pdf')
+plt.show()
+
+
+#sorted (column/feature wise) absolute shap values 
+#abs_shap_values = np.abs(shap_values)[:,sorted_idx]  # element-wise absolute (hourly)
+abs_shap_values = np.mean(np.abs(shap_values)[:,sorted_idx],axis=-1)  #daily
+#apply wilcoxon
+from scipy.stats import wilcoxon
+shap_feature1 = abs_shap_values[:, 2]
+shap_feature2 = abs_shap_values[:, 4]
+stat, p_value = wilcoxon(shap_feature1, shap_feature2)
+
+print(f"Wilcoxon statistic: {stat}, p-value: {p_value}")
+##################################
+
+
+
+
+##################### Task 2: show summary plots
 feature_names=['cosine_transform_hour_of_day','is_holiday','is_weekend','airTemperature','windSpeed']+[f"Lag {i}" for i in range(src_lookback,0,-1)]
 
 avg_shap_values = np.mean(np.array(shap_values), axis=0).squeeze(axis=-1) 
