@@ -11,10 +11,10 @@ The repo's code is implemented for a four-source domain adaptation forecaster. I
 put all the github repo in a single folder, set your project directory, and install the packages listed in main_multi_source_implementation.py/lines 8-18 and SHAP.py/ lines 10-17
 
 ## multi-source model setup
-1- you should modify the values of the lookback window T and the future horizon H in lines 95-98 based on the type of forecasting:<br>
+1-you should modify the values of the lookback window T and the future horizon H in lines 95-98 based on the type of forecasting:<br>
 - hourly: T=24 and H=1.<br>
 - daily: T=24*7 and H=24.<br>
-2- for the source data train-validation-test split, please refer to lines 200-206. <br>
+2-for the source data train-validation-test split, please refer to lines 200-206. <br>
 3-The values of certain hyperparameters depend on the forecasting scenario (hourly or daily). Please, refer to lines 320 to 350 and follow the comments at each line to set the right values. <br>
 4-For reproducibility of the results, you have to modify these lines:<br>
 *main_multi_source_implementation.py/line 383, you should adjust the number of source features depending on how many source datasets you are using. For example, if you use three source datasets, you have to remove src4_features.<br>
