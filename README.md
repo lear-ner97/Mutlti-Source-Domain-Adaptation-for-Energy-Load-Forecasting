@@ -12,8 +12,8 @@ put all the github repo in a single folder, set your project directory, and inst
 
 ## multi-source model setup
 1-you should modify the values of the lookback window T and the future horizon H in lines 95-98 based on the type of forecasting:<br>
--hourly: T=24 and H=1.
--daily: T=24*7 and H=24.
+-hourly: T=24 and H=1.<br>
+-daily: T=24*7 and H=24.<br>
 2-for the source data train-validation-test split, please refer to lines 200-206. <br>
 3-The values of certain hyperparameters depend on the forecasting scenario (hourly or daily). Please, refer to lines 320 to 350 and follow the comments at each line to set the right values. <br>
 4-For reproducibility of the results, you have to modify these lines:<br>
