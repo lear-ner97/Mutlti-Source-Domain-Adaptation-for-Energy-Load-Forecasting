@@ -92,10 +92,10 @@ tgt_data = pd.merge(tgt_data, weather_data, on='timestamp', how='left')
 
 
 # set the historical length T and the future horizon H
-src_lookback = 24*7 #24*7
-src_horizon = 24 #24*1
-tgt_lookback = 24*7
-tgt_horizon = 24
+src_lookback = 24*1 #24*7
+src_horizon = 1 #24*1
+tgt_lookback = 24*1
+tgt_horizon = 1
 
 
 
@@ -202,8 +202,8 @@ X_train_src4,y_train_src4 = X_src4,y_src4
 #for 1h resolution: 679,1018
 
 #source data selection only
-train_limit=525
-valid_limit=750
+train_limit=679
+valid_limit=1018
 X_train_tgt,y_train_tgt = X_tgt[:train_limit],y_tgt[:train_limit]
 X_valid_tgt,y_valid_tgt = X_tgt[train_limit:valid_limit],y_tgt[train_limit:valid_limit]
 X_test_tgt,y_test_tgt = X_tgt[valid_limit:],y_tgt[valid_limit:]
@@ -317,14 +317,21 @@ i = 0
 random_seed=32 # the result is basically the same with different random seeds
 
 
+#hyperparameters related to the forecasting scenario: daily or hourly
+in_channels0=1
+forecast_length=tgt_horizon################################ 1 for 1h & 24 for 24h forecasting
+output_size=29 # number of features, 173 for 24h, 29 for 1h
+
 
 #training hyperparameters
 learning_rate = 0.001
 num_epochs = 20
+
+
 ############### tcn hyperparameters
 # kernel_size was tested using these vlaues{3,5,7,9,10,11,13}
 # for 3,5 gave low accuracy values, started to improve significantly from 7, the best is 9
-kernel_size=  7#7 for 24h, 9 for 1h gave .9671
+kernel_size=  9#7 for 24h, 9 for 1h gave .9671
 #stride was fixed to 1 in order to avoid dimensionality matching issues
 stride= 1 #could not be tuned because of dimentionality matching in tcn/out_0 = self.relu(x0 + res0)
 # out_channels0 {64,128}
@@ -333,6 +340,7 @@ in_channels1= 75 # has no role, to be deleted
 # out_channels0 {64,128}
 out_channels1=128
 
+
 ###########bigru hyperparameters
 input_size=1  #number of input channels
 #hidden_size must be the same as out_channels1, must match the input szie of the frcst layer
@@ -340,10 +348,7 @@ hidden_size=128
 #tested {100,150,200}
 num_gru_units=100 #100 for 24h & 1h
 num_gru_layers=1#2 for  24h , 1 for 1h
-#fixed hyperparameters
-in_channels0=1
-forecast_length=24################################ 1 for 1h & 24 for 24h forecasting
-output_size=173 # number of features, 173 for 24h, 29 for 1h
+
 
 
 seeds=[76]#32, 70, 25, 53, 78, 86, 56, 30, 20, 76]
@@ -375,9 +380,9 @@ for random_seed in seeds:
 
         #uncomment this for multi source
         #@for the source features, it depends on how many sources you have. The following line corresponds to four sources
-        train_loss,src1_features,src2_features,src3_features,src4_features,target_features=train_one_epoch(full_model,list_source_loaders,tgt_train_loader,
+        train_loss,src1_features,src2_features,src3_features,target_features=train_one_epoch(full_model,list_source_loaders,tgt_train_loader,
                     regression_loss_function,regression_optimizer,scheduler,epoch,
-                    num_epochs)
+                    num_epochs) #,src4_features after src3_features
         #uncomment this for target only
 #        train_loss,target_features=train_one_epoch_target_only(full_model,list_source_loaders,src_train_loader1,
 #                    regression_loss_function,regression_optimizer,scheduler,epoch,
@@ -475,5 +480,4 @@ print('mapes:\n')
 print(mapes)
 print('r2scores:\n')
 print(r2scores)
-
 
